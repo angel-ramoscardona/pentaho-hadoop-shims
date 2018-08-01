@@ -144,4 +144,33 @@
                   availability="optional"/>
   <!--<reference id="cdh513HadoopConfiguration" interface="org.pentaho.hadoop.shim.api.HadoopConfigurationInterface"/>-->
 
+  <!-- Oozie service definition -->
+  <bean id="cdh513OozieServiceFactory" class="org.pentaho.big.data.impl.shim.oozie.OozieServiceFactoryImpl"/>
+
+  <service ref="cdh513OozieServiceFactory" interface="org.pentaho.big.data.api.cluster.service.locator.NamedClusterServiceFactory">
+    <service-properties>
+      <entry key="shim">
+        <value type="java.lang.String">cdh513</value>
+      </entry>
+      <entry key="service">
+        <value type="java.lang.String">oozie</value>
+      </entry>
+    </service-properties>
+  </service>
+  <!-- End of Oozie service definition -->
+
+  <!-- Hive service definition -->
+  <bean id="cdh513HiveDriver" class="com.pentaho.big.data.bundles.impl.shim.hive.HiveDriver">
+    <argument ref="jdbcUrlParser"/>
+    <argument value="org.apache.hive.jdbc.HiveDriver"/>
+    <argument value="cdh513"/>
+  </bean>
+  <service ref="cdh513HiveDriver" interface="java.sql.Driver">
+    <service-properties>
+      <entry key="dataSourceType" value="bigdata"/>
+    </service-properties>
+  </service>
+  <reference id="jdbcUrlParser" interface="org.pentaho.big.data.api.jdbc.JdbcUrlParser"/>
+  <!-- End of Hive service definition -->
+
 </blueprint>
