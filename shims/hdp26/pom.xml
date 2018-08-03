@@ -39,8 +39,8 @@
   <modules>
     <module>common</module>
     <module>hbase</module>
-    <module>hive</module>
+    <!--<module>hive</module>-->
     <module>hbase-comparators</module>
-    <module>oozie</module>
+    <!--<module>oozie</module>-->
   </modules>
 </project>
