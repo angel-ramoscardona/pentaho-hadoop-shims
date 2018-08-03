@@ -174,4 +174,34 @@
   <reference id="jdbcUrlParser" interface="org.pentaho.big.data.api.jdbc.JdbcUrlParser"/>
   <!-- End of Hive service definition -->
 
+  <!-- Hbase service definition -->
+  <bean id="hbaseShim" class="org.pentaho.hbase.shim.common.CommonHBaseShim"/>
+  <service ref="hbaseShim" auto-export="interfaces">
+    <service-properties>
+      <entry key="shim">
+        <value type="java.lang.String">hdp26</value>
+      </entry>
+      <entry key="service">
+        <value type="java.lang.String">hbase</value>
+      </entry>
+    </service-properties>
+  </service>
+
+  <bean id="hdp26HBaseServiceFactory" class="com.pentaho.big.data.bundles.impl.shim.hbase.HBaseServiceFactory">
+    <argument ref="hbaseShim"/>
+  </bean>
+
+  <service ref="hdp26HBaseServiceFactory"
+           interface="org.pentaho.big.data.api.cluster.service.locator.NamedClusterServiceFactory">
+    <service-properties>
+      <entry key="shim">
+        <value type="java.lang.String">hdp26</value>
+      </entry>
+      <entry key="service">
+        <value type="java.lang.String">hbase</value>
+      </entry>
+    </service-properties>
+  </service>
+  <!-- End of Hbase service definition -->
+
 </blueprint>

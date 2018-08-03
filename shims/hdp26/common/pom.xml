@@ -509,6 +509,118 @@
     -->
     <!-- End of Hive dependencies -->
 
+    <!-- Hbase dependencies -->
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf-java.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.yammer.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-server</artifactId>
+      <version>${org.apache.hbase.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-client</artifactId>
+      <version>${org.apache.hbase.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-prefix-tree</artifactId>
+      <version>${org.apache.hbase.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-protocol</artifactId>
+      <version>${org.apache.hbase.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-common</artifactId>
+      <version>${org.apache.hbase.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-hadoop-compat</artifactId>
+      <version>${org.apache.hbase.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.cloudera.htrace</groupId>
+      <artifactId>htrace-core</artifactId>
+      <version>${htrace-core.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+      <version>${zookeeper.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho</groupId>
+      <artifactId>pentaho-big-data-impl-shim-hbase</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- End of Hbase dependencies -->
+
+
   </dependencies>
   <build>
     <plugins>
@@ -630,6 +742,23 @@
                 </artifactItem>
                 <!-- End of Hive artifact -->
 
+                <!-- Hbase artifact -->
+                <artifactItem>
+                  <groupId>org.pentaho</groupId>
+                  <artifactId>pentaho-hadoop-shims-common-hbase</artifactId>
+                  <classifier>sources</classifier>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}/src</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.pentaho</groupId>
+                  <artifactId>pentaho-big-data-impl-shim-hbase</artifactId>
+                  <classifier>sources</classifier>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}/src</outputDirectory>
+                </artifactItem>
+                <!-- End of Hbase artifact -->
+
               </artifactItems>
             </configuration>
           </execution>
@@ -674,20 +803,50 @@
                 <!-- Needed for Pig -->
                 *:antlr-runtime,*:automaton,*:pig,*:joda-time,
                 <!-- Needed for Formats -->
-                *:parquet*,*:avro,*:orc*,*:protobuf*,*:aircompressor,*:snappy*</include>
+                *:parquet*,*:avro,*:orc*,*:protobuf*,*:aircompressor,*:snappy*,
+                <!-- Needed for Oozie -->
+                *:oozie*,
+                <!-- Needed for Hive -->
+                *:hive-*,*:automaton,
+                <!-- Needed for Sqoop/hbase -->
+                *:hbase*,*:*htrace-core,*:*zookeeper*,*:hadoop-auth*,*:netty-all*,com.yammer.metrics:metrics-core*
+                <!-- Extra -->
+                <!--
+                *:apacheds-i18n-2.0.0-M15.jar,
+                *:apacheds-kerberos-codec-2.0.0-M15.jar,
+                *:api-asn1-api-1.0.0-M20.jar,
+                *:api-util-1.0.0-M20.jar,
+                *:curator-framework-2.7.1.jar,
+                *:curator-recipes-2.7.1.jar,
+                *:hadoop-hdfs-2.7.3.2.6.0.3-8.jar,
+                *:jcip-annotations-1.0.jar,
+                *:jetty-sslengine-6.1.26.hwx.jar,
+                *:json-smart-1.1.1.jar,
+                *:jsp-api-2.1.jar,
+                *:jsr305-3.0.0.jar,
+                *:metrics-core-3.0.1.jar,
+                *:netty-all-4.0.23.Final.jar,
+                *:nimbus-jose-jwt-3.9.jar,
+                *:okhttp-2.4.0.jar,
+                *:okio-1.4.0.jar
+                -->
+              </include>
               <exclude>*:*tests*,*:pentaho-big-data-api*</exclude>
               <transitive>false</transitive>
             </resolverFilter>
 
             <!-- Oozie resolve filter -->
+            <!--
             <resolverFilter>
               <include>*:oozie*</include>
               <exclude>*:*tests*</exclude>
               <transitive>false</transitive>
             </resolverFilter>
+            -->
             <!-- End of Oozie resolve filter -->
 
             <!-- Hive resolve filter -->
+            <!--
             <resolverFilter>
               <include>
                 *:hive-*,*:automaton
@@ -697,7 +856,18 @@
               </exclude>
               <transitive>false</transitive>
             </resolverFilter>
+            -->
             <!-- End of Hive resolve filter -->
+
+            <!-- Hbase resolve filter -->
+            <!--
+            <resolverFilter>
+              <include>*:hbase*,*:*htrace-core,*:*zookeeper*,*:hadoop-auth*,*:netty-all*,com.yammer.metrics:metrics-core*</include>
+              <exclude>*:*tests*</exclude>
+              <transitive>false</transitive>
+            </resolverFilter>
+            -->
+            <!-- End of Hbase resolve filter -->
 
           </resolverFilters>
         </configuration>
@@ -749,12 +919,17 @@
               org.pentaho.hadoop.shim;version=${pentaho-osgi-bundles.version},
               org.pentaho.hadoop.shim.api.*;version=${pentaho-osgi-bundles.version},
               org.pentaho.hadoop.shim.spi.*;version=${pentaho-osgi-bundles.version},
+              io.netty.channel;version=${bundle.export.version},
               org.apache.hadoop.conf.*;version=${bundle.export.version}
             </Import-Package>
             <_exportcontents>
-              ${bundle.karaf.export.packages},
+              ${bundle.karaf.export.packages}
+              <!--
               org.pentaho.big.data.impl.shim.oozie,
-              org.apache.hadoop.hive.*;version=${bundle.export.version}
+              org.apache.hadoop.hive.*;version=${bundle.export.version},
+              org.pentaho.hbase.shim.common;version=${bundle.export.version},
+              org.apache.hadoop.hbase.*;version=${bundle.export.version}
+              -->
             </_exportcontents>
             <Embed-Dependency>*</Embed-Dependency>
           </instructions>
