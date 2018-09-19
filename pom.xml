@@ -299,7 +299,7 @@
         <module>common-services</module>
         <module>common-fragment</module>
         <module>common-dependencies</module>
-        <module>shims</module>
+        <module>drivers</module>
       </modules>
     </profile>
 
