@@ -4,10 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.pentaho</groupId>
-    <artifactId>pentaho-hadoop-shims-hdp26-reactor</artifactId>
+    <!--<artifactId>pentaho-hadoop-shims</artifactId>-->
+    <!--<artifactId>pentaho-hadoop-shims-hdp26-reactor</artifactId>-->
+    <artifactId>pentaho-hadoop-shims</artifactId>
     <version>9.0.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>pentaho-hadoop-shims-hdp26-common</artifactId>
+  <artifactId>pentaho-hadoop-shims-common-dependencies</artifactId>
   <version>9.0.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <properties>
@@ -56,6 +58,7 @@
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
+      <version>${org.osgi.core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.pentaho</groupId>
@@ -197,174 +200,13 @@
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack-common-sources</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-hadoop-shims-common-shim</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-hadoop-shims-common-hadoop-shim</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-hadoop-shims-common-mapred</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-hdfs</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>common-sqoop-shim</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-sqoop</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-mapreduce</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>common-pig-shim</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-pig</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
 
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>common-format-shim</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-format</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-
-                <!-- Oozie artifact -->
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-oozie</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <!-- End of Oozie artifact -->
-
-                <!-- Hive artifact -->
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-hadoop-shims-common-shim</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-hive</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <!-- End of Hive artifact -->
-
-                <!-- Hbase artifact -->
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-hadoop-shims-common-hbase</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.pentaho</groupId>
-                  <artifactId>pentaho-big-data-impl-shim-hbase</artifactId>
-                  <classifier>sources</classifier>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}/src</outputDirectory>
-                </artifactItem>
-                <!-- End of Hbase artifact -->
-
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>unpack-dependencies</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <markersDirectory>${project.build.directory}/dependencies/dependency-maven-plugin-markers
-              </markersDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>pentaho</groupId>
-                  <artifactId>pentaho-hdfs-vfs</artifactId>
-                  <version>9.0.0.0-SNAPSHOT</version>
-                  <type>jar</type>
-                  <outputDirectory>${project.build.directory}/dependencies/hadoop-common</outputDirectory>
-                  <includes>META-INF/vfs-providers.xml</includes>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>com.pentaho</groupId>
         <artifactId>shim-bundle-plugin</artifactId>
         <version>${shim-bundle-plugin.version}</version>
         <configuration>
           <resolverFilters>
-            <!--
             <resolverFilter>
               <include>
                 *:aws-java-sdk-core,*:jackson-core,*:xstream,*:guava,*:httpclient,
@@ -375,7 +217,6 @@
               </exclude>
               <transitive>true</transitive>
             </resolverFilter>
-            -->
             <!--
             <resolverFilter>
               <include>
@@ -395,32 +236,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.igormaznitsa</groupId>
-        <artifactId>jcp</artifactId>
-        <version>${com.igormaznitsa.jcp.version}</version>
-        <executions>
-          <execution>
-            <id>preprocessSources</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>preprocess</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <globalVars>
-            <property>
-              <name>shim_type</name>
-              <value>${shim.type}</value>
-            </property>
-            <property>
-              <name>shim_name</name>
-              <value>${shim.name}</value>
-            </property>
-          </globalVars>
-        </configuration>
-      </plugin>
+
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>

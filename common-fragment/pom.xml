@@ -4,14 +4,29 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.pentaho</groupId>
-    <artifactId>pentaho-hadoop-shims-hdp26-reactor</artifactId>
+    <!--<artifactId>pentaho-hadoop-shims</artifactId>-->
+    <!--<artifactId>pentaho-hadoop-shims-list</artifactId>-->
+    <artifactId>pentaho-hadoop-shims</artifactId>
     <version>9.0.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>pentaho-hadoop-shims-hdp26-common</artifactId>
+  <artifactId>pentaho-hadoop-shims-common-fragment</artifactId>
   <version>9.0.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <properties>
-    <vendor-driver.version>2.6.0.0.hdp</vendor-driver.version>
+    <shim.name>hdp26</shim.name>
+    <shim.type>HDP</shim.type>
+    <shim-bundle-plugin.version>1.0</shim-bundle-plugin.version>
+    <com.igormaznitsa.jcp.version>6.1.2</com.igormaznitsa.jcp.version>
+    <org.apache.hadoop.version>2.7.3.2.6.0.3-8</org.apache.hadoop.version>
+    <org.apache.avro.version>1.8.0</org.apache.avro.version>
+    <parquet.version>1.8.1</parquet.version>
+    <sqoop.version>1.4.6.2.6.0.3-8</sqoop.version>
+    <pig.version>0.16.0.2.6.0.3-8</pig.version>
+    <dependency.pig.classifier>h2</dependency.pig.classifier>
+    <org.apache.hive.version>1.2.1000.2.6.0.3-8</org.apache.hive.version>
+    <org.apache.oozie.version>4.2.0.2.6.0.3-8</org.apache.oozie.version>
+    <org.apache.hbase.version>1.1.2.2.6.0.3-8</org.apache.hbase.version>
+    <org.osgi.core.version>4.3.1</org.osgi.core.version>
     <pentaho-code.version>11.0.0.0</pentaho-code.version>
   </properties>
   <dependencies>
@@ -39,6 +54,12 @@
     </dependency>
     <dependency>
       <groupId>org.pentaho</groupId>
+      <artifactId>pentaho-hadoop-shims-common-hbase-comparators-api</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.pentaho</groupId>
       <artifactId>pentaho-hadoop-shims-common-shim</artifactId>
       <version>${project.version}</version>
       <classifier>sources</classifier>
@@ -56,6 +77,7 @@
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
+      <version>${org.osgi.core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.pentaho</groupId>
@@ -319,6 +341,7 @@
                 <artifactItem>
                   <groupId>org.pentaho</groupId>
                   <artifactId>pentaho-hadoop-shims-common-hbase</artifactId>
+                  <version>${project.version}</version>
                   <classifier>sources</classifier>
                   <overWrite>false</overWrite>
                   <outputDirectory>${project.build.directory}/src</outputDirectory>
@@ -357,6 +380,93 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/src</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-resource</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/src/META-INF</directory>
+                  <targetPath>META-INF</targetPath>
+                </resource>
+                <resource>
+                  <directory>${project.build.directory}/src</directory>
+                  <includes>
+                    <include>**/*.properties</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-integration-test-resource</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/test-src</directory>
+                  <targetPath>${project.build.directory}/it-classes</targetPath>
+                  <includes>
+                    <include>**/*</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-resource</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/test-src</directory>
+                  <includes>
+                    <include>**/*</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/test-src</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+        <inherited>true</inherited>
       </plugin>
       <plugin>
         <groupId>com.pentaho</groupId>
