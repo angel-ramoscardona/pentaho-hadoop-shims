@@ -34,7 +34,12 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.hadoop</groupId>
+      <groupId>org.apache.parquet</groupId>
+      <artifactId>parquet-hadoop-bundle</artifactId>
+      <version>${org.apache.parquet.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>hadoop-mapreduce-client-core
       <artifactId>hadoop-mapreduce-client-core</artifactId>
       <version>${org.apache.hadoop.version}</version>
     </dependency>
