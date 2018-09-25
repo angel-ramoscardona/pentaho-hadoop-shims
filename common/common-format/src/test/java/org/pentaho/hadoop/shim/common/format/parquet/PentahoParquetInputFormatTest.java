@@ -58,6 +58,7 @@ import org.pentaho.hadoop.shim.api.format.IParquetInputField;
 import org.pentaho.hadoop.shim.api.format.IPentahoInputFormat;
 import org.pentaho.hadoop.shim.api.format.IPentahoInputFormat.IPentahoInputSplit;
 import org.pentaho.hadoop.shim.api.format.IPentahoInputFormat.IPentahoRecordReader;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoApacheInputFormat;
 
 import static org.mockito.Mockito.mock;
 
@@ -68,7 +69,7 @@ public class PentahoParquetInputFormatTest {
 
     String parquetFilePath = getClass().getClassLoader().getResource( "sample.pqt" ).toExternalForm();
 
-    PentahoParquetInputFormat pentahoParquetInputFormat = new PentahoParquetInputFormat( mock( NamedCluster.class ) );
+    PentahoApacheInputFormat pentahoParquetInputFormat = new PentahoApacheInputFormat( mock( NamedCluster.class ) );
     pentahoParquetInputFormat.setInputFile( getClass().getClassLoader().getResource( "sample.pqt" ).toExternalForm() );
     List<IParquetInputField> schema = pentahoParquetInputFormat.readSchema( parquetFilePath );
 
@@ -109,7 +110,7 @@ public class PentahoParquetInputFormatTest {
   public void testSpacesInFilePath() throws Exception {
     Exception exception = null;
     try {
-      PentahoParquetInputFormat in = new PentahoParquetInputFormat( mock( NamedCluster.class ) );
+      PentahoApacheInputFormat in = new PentahoApacheInputFormat( mock( NamedCluster.class ) );
       in.setInputFile( "/test test/out.txt" );
     } catch (  Exception e ) {
       exception = e;
@@ -149,7 +150,7 @@ public class PentahoParquetInputFormatTest {
       new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ),
       new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ) } );
 
-    PentahoParquetInputFormat inSchema = new PentahoParquetInputFormat( mock( NamedCluster.class ) );
+    PentahoApacheInputFormat inSchema = new PentahoApacheInputFormat( mock( NamedCluster.class ) );
     List<? extends IParquetInputField> fileFields =
       inSchema.readSchema( getClass().getClassLoader().getResource( file ).toExternalForm() );
 
@@ -204,7 +205,7 @@ public class PentahoParquetInputFormatTest {
 
   private List<RowMetaAndData> readFile( String file, List<IParquetInputField> readSchema ) throws Exception {
     System.out.println( "Read '" + file + "' as schema: " + readSchema );
-    PentahoParquetInputFormat in = new PentahoParquetInputFormat( mock( NamedCluster.class ) );
+    PentahoApacheInputFormat in = new PentahoApacheInputFormat( mock( NamedCluster.class ) );
     in.setInputFile( getClass().getClassLoader().getResource( file ).toExternalForm() );
     in.setSchema( readSchema );
 

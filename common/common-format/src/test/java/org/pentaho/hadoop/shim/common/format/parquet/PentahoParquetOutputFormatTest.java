@@ -46,13 +46,14 @@ import org.pentaho.hadoop.shim.api.format.IPentahoOutputFormat.IPentahoRecordWri
 import org.pentaho.hadoop.shim.api.format.IPentahoParquetOutputFormat.COMPRESSION;
 import org.pentaho.hadoop.shim.api.format.IPentahoParquetOutputFormat.VERSION;
 import org.pentaho.hadoop.shim.api.format.ParquetSpec;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoApacheOutputFormat;
 
 public class PentahoParquetOutputFormatTest {
 
 //#if shim_type!="MAPR"
   @Test
   public void createRecordWriterWhenSchemaAndPathIsNotNull() throws Exception {
-    PentahoParquetOutputFormat pentahoParquetOutputFormat = new PentahoParquetOutputFormat();
+    PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
 
     String tempFile = Files.createTempDirectory( "parquet" ).toUri().toString();
     pentahoParquetOutputFormat.setOutputFile( tempFile.toString() + "test", true );
@@ -71,7 +72,7 @@ public class PentahoParquetOutputFormatTest {
 
     String tempFile = Files.createTempDirectory( "parquet" ).toUri().toString();
 
-    PentahoParquetOutputFormat pentahoParquetOutputFormat = new PentahoParquetOutputFormat();
+    PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
 
     pentahoParquetOutputFormat.setOutputFile( tempFile.toString() + "test1", true );
     pentahoParquetOutputFormat.setFields( null );
@@ -84,7 +85,7 @@ public class PentahoParquetOutputFormatTest {
 
     String tempFile = null;
 
-    PentahoParquetOutputFormat pentahoParquetOutputFormat = new PentahoParquetOutputFormat();
+    PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
 
     pentahoParquetOutputFormat.setOutputFile( tempFile, true );
     pentahoParquetOutputFormat.setFields( ParquetUtils.createOutputFields() );
@@ -124,7 +125,7 @@ public class PentahoParquetOutputFormatTest {
   public void testSpacesInOutputFilePath() {
     Exception exception = null;
     try {
-      PentahoParquetOutputFormat pentahoParquetOutputFormat = new PentahoParquetOutputFormat();
+      PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
       pentahoParquetOutputFormat.setOutputFile( "/test test/output.parquet", true );
     } catch ( Exception e ) {
       exception = e;
@@ -134,7 +135,7 @@ public class PentahoParquetOutputFormatTest {
   }
 
   private long writeData( String file, VERSION ver, COMPRESSION compr, boolean dictionary ) throws Exception {
-    PentahoParquetOutputFormat of = new PentahoParquetOutputFormat();
+    PentahoApacheOutputFormat of = new PentahoApacheOutputFormat();
     of.setVersion( ver );
     of.setCompression( compr );
     of.enableDictionary( dictionary );

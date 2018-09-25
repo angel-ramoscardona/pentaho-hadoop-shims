@@ -38,6 +38,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.pentaho.hadoop.shim.api.format.IParquetInputField;
 import org.pentaho.hadoop.shim.common.ConfigurationProxy;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.ParquetConverter;
 
 import java.net.URL;
 import java.nio.file.Paths;

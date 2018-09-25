@@ -31,6 +31,7 @@ import org.apache.parquet.hadoop.api.WriteSupport;
 import org.pentaho.di.core.util.Assert;
 import org.junit.Test;
 import org.pentaho.hadoop.shim.api.format.ParquetSpec;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoParquetWriteSupport;
 
 
 public class PentahoParquetWriteSupportTest {

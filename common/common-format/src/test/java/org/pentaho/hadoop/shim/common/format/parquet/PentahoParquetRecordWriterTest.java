@@ -55,6 +55,9 @@ import org.pentaho.hadoop.shim.api.format.IParquetInputField;
 import org.pentaho.hadoop.shim.api.format.IPentahoInputFormat;
 import org.pentaho.hadoop.shim.api.format.ParquetSpec;
 import org.pentaho.hadoop.shim.common.ConfigurationProxy;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoApacheInputFormat;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoParquetRecordWriter;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoParquetWriteSupport;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -175,7 +178,7 @@ public class PentahoParquetRecordWriterTest {
 
     IPentahoInputFormat.IPentahoRecordReader recordReader = null;
     try {
-      PentahoParquetInputFormat pentahoParquetInputFormat = new PentahoParquetInputFormat( mock( NamedCluster.class ) );
+      PentahoApacheInputFormat pentahoParquetInputFormat = new PentahoApacheInputFormat( mock( NamedCluster.class ) );
       pentahoParquetInputFormat.setInputFile( parquetFilePath );
       List<IParquetInputField> schema = pentahoParquetInputFormat.readSchema( parquetFilePath );
       pentahoParquetInputFormat.setSchema( schema );

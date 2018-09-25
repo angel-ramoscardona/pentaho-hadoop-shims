@@ -43,6 +43,9 @@ import org.pentaho.di.core.util.Assert;
 import org.pentaho.hadoop.shim.api.format.IParquetInputField;
 import org.pentaho.hadoop.shim.api.format.SchemaDescription;
 import org.pentaho.hadoop.shim.common.ConfigurationProxy;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.ParquetConverter;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoParquetReadSupport;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoParquetRecordReader;
 
 import java.util.List;
 
