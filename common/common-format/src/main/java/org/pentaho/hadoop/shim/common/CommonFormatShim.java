@@ -34,6 +34,7 @@ import org.pentaho.hadoop.shim.common.format.orc.PentahoOrcInputFormat;
 import org.pentaho.hadoop.shim.common.format.orc.PentahoOrcOutputFormat;
 import org.pentaho.hadoop.shim.common.format.avro.PentahoAvroInputFormat;
 import org.pentaho.hadoop.shim.common.format.avro.PentahoAvroOutputFormat;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.DelegateFormatFactory;
 import org.pentaho.hadoop.shim.spi.FormatShim;
 import org.pentaho.big.data.api.cluster.NamedCluster;
 

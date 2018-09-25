@@ -39,7 +39,7 @@
       <version>${org.apache.parquet.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.hadoop</groupId>hadoop-mapreduce-client-core
+      <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-mapreduce-client-core</artifactId>
       <version>${org.apache.hadoop.version}</version>
     </dependency>

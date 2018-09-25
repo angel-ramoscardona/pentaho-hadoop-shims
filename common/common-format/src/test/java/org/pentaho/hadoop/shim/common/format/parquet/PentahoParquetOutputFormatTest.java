@@ -27,10 +27,14 @@ import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.pentaho.di.core.RowMetaAndData;
 import org.pentaho.di.core.row.RowMeta;
 import org.pentaho.di.core.row.value.ValueMetaBigNumber;
@@ -43,17 +47,43 @@ import org.pentaho.di.core.row.value.ValueMetaTimestamp;
 import org.pentaho.di.core.util.Assert;
 import org.pentaho.hadoop.shim.api.format.IPentahoOutputFormat;
 import org.pentaho.hadoop.shim.api.format.IPentahoOutputFormat.IPentahoRecordWriter;
+import org.pentaho.hadoop.shim.api.format.IPentahoParquetOutputFormat;
 import org.pentaho.hadoop.shim.api.format.IPentahoParquetOutputFormat.COMPRESSION;
 import org.pentaho.hadoop.shim.api.format.IPentahoParquetOutputFormat.VERSION;
 import org.pentaho.hadoop.shim.api.format.ParquetSpec;
-import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoApacheOutputFormat;
 
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.apache.PentahoApacheOutputFormat;
+import org.pentaho.hadoop.shim.common.format.parquet.delegate.twitter.PentahoTwitterOutputFormat;
+
+@RunWith(Parameterized.class)
 public class PentahoParquetOutputFormatTest {
 
-//#if shim_type!="MAPR"
+  @Parameterized.Parameters
+  public static Iterable<Object[]> data() {
+    return Arrays.asList(new Object[][] { { "APACHE" }, { "TWITTER" } });
+  }
+
+  @Parameterized.Parameter
+  public String provider;
+
+  private IPentahoParquetOutputFormat pentahoParquetOutputFormat;
+
+  @Before
+  public void resetInputFormatBeforeEachTest() throws Exception {
+    switch( provider ) {
+      case "APACHE":
+        pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
+        break;
+      case "TWITTER":
+        pentahoParquetOutputFormat = new PentahoTwitterOutputFormat();
+        break;
+      default:
+        org.junit.Assert.fail("Invalid provider name used.");
+    }
+  }
+
   @Test
   public void createRecordWriterWhenSchemaAndPathIsNotNull() throws Exception {
-    PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
 
     String tempFile = Files.createTempDirectory( "parquet" ).toUri().toString();
     pentahoParquetOutputFormat.setOutputFile( tempFile.toString() + "test", true );
@@ -63,16 +93,13 @@ public class PentahoParquetOutputFormatTest {
 
     Assert.assertNotNull( recordWriter, "recordWriter should NOT be null!" );
     Assert.assertTrue( recordWriter instanceof IPentahoOutputFormat.IPentahoRecordWriter,
-      "recordWriter should be instance of IPentahoInputFormat.IPentahoRecordReader" );
+            "recordWriter should be instance of IPentahoInputFormat.IPentahoRecordReader" );
   }
-//#endif
 
   @Test( expected = RuntimeException.class )
   public void createRecordWriterWhenSchemaIsNull() throws Exception {
 
     String tempFile = Files.createTempDirectory( "parquet" ).toUri().toString();
-
-    PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
 
     pentahoParquetOutputFormat.setOutputFile( tempFile.toString() + "test1", true );
     pentahoParquetOutputFormat.setFields( null );
@@ -85,15 +112,12 @@ public class PentahoParquetOutputFormatTest {
 
     String tempFile = null;
 
-    PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
-
     pentahoParquetOutputFormat.setOutputFile( tempFile, true );
     pentahoParquetOutputFormat.setFields( ParquetUtils.createOutputFields() );
 
     pentahoParquetOutputFormat.createRecordWriter();
   }
 
-//#if shim_type!="MAPR"
   @Test
   public void testFileOutput() throws Exception {
     long sz1un = writeData( "1_uncompressed_nodict.par", VERSION.VERSION_1_0, COMPRESSION.UNCOMPRESSED, true );
@@ -125,7 +149,6 @@ public class PentahoParquetOutputFormatTest {
   public void testSpacesInOutputFilePath() {
     Exception exception = null;
     try {
-      PentahoApacheOutputFormat pentahoParquetOutputFormat = new PentahoApacheOutputFormat();
       pentahoParquetOutputFormat.setOutputFile( "/test test/output.parquet", true );
     } catch ( Exception e ) {
       exception = e;
@@ -135,10 +158,9 @@ public class PentahoParquetOutputFormatTest {
   }
 
   private long writeData( String file, VERSION ver, COMPRESSION compr, boolean dictionary ) throws Exception {
-    PentahoApacheOutputFormat of = new PentahoApacheOutputFormat();
-    of.setVersion( ver );
-    of.setCompression( compr );
-    of.enableDictionary( dictionary );
+    pentahoParquetOutputFormat.setVersion( ver );
+    pentahoParquetOutputFormat.setCompression( compr );
+    pentahoParquetOutputFormat.enableDictionary( dictionary );
 
     List<ParquetOutputField> fields = new ArrayList<>();
 
@@ -201,9 +223,9 @@ public class PentahoParquetOutputFormatTest {
     outputField.setAllowNull( true );
     fields.add( outputField );
 
-    of.setFields( fields );
-    of.setOutputFile( "testparquet/" + file, true );
-    IPentahoRecordWriter wr = of.createRecordWriter();
+    pentahoParquetOutputFormat.setFields( fields );
+    pentahoParquetOutputFormat.setOutputFile( "testparquet/" + file, true );
+    IPentahoRecordWriter wr = pentahoParquetOutputFormat.createRecordWriter();
     RowMeta rowMeta = new RowMeta();
     rowMeta.addValueMeta( new ValueMetaNumber( "fnum" ) );
     rowMeta.addValueMeta( new ValueMetaString( "fstring" ) );
@@ -221,10 +243,10 @@ public class PentahoParquetOutputFormatTest {
         new BigDecimal( 4.5 ), null, null ) );
     wr.write( new RowMetaAndData( rowMeta, null, "Paul", df.parse( "2018-01-01 09:10:15" ), false, 3L, null,
         new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ),
-        new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ) ) );
+            new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ) ) );
     wr.write( new RowMetaAndData( rowMeta, 2.1, "George", null, true, null, new BigDecimal( 4.5 ),
         new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ),
-        new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ) ) );
+            new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ) ) );
     wr.write( new RowMetaAndData( rowMeta, 2.1, "Ringo", df.parse( "2018-01-01 09:10:35" ), null, 4L,
         new BigDecimal( 4.5 ),
         new Timestamp( df.parse( "2018-05-01 13:00:00" ).getTime() ),
@@ -238,5 +260,4 @@ public class PentahoParquetOutputFormatTest {
     }
     return sz;
   }
-//#endif
 }
