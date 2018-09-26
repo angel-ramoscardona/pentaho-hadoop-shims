@@ -23,6 +23,7 @@ import org.apache.pig.tools.grunt.GruntParser;
 import org.pentaho.hadoop.shim.spi.PigShim;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -41,12 +42,12 @@ public class PigShimImpl extends CommonPigShim {
     addExternalJarsToPigContext( pigContext );
     PigServer pigServer = new PigServer( pigContext );
     try {
-      Constructor constructor = PigServer.class.getConstructor( StringReader.class, PigServer.class );
-      grunt = (GruntParser)constructor.newInstance( new StringReader( pigScript ), pigServer );
+      Constructor constructor = GruntParser.class.getConstructor( Reader.class );
+      grunt = (GruntParser)constructor.newInstance( new StringReader( pigScript ) );
     } catch ( Exception e ) {
       try {
-        Constructor constructor = PigServer.class.getConstructor( StringReader.class );
-        grunt = (GruntParser)constructor.newInstance( new StringReader( pigScript ) );
+        Constructor constructor = GruntParser.class.getConstructor( Reader.class, PigServer.class );
+        grunt = (GruntParser)constructor.newInstance( new StringReader( pigScript ), pigServer );
         try {
           Method method = grunt.getClass().getMethod("setParams", new Class[]{PigServer.class});
           method.invoke( pigServer );
