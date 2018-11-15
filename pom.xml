@@ -294,12 +294,9 @@
         </property>
       </activation>
       <modules>
-        <module>common-services-api</module>
-        <module>common</module>
-        <module>common-services</module>
-        <module>common-fragment</module>
-        <module>common-dependencies</module>
-        <module>drivers</module>
+        <module>shim-api</module>
+        <module>shim</module>
+        <module>clusters</module>
       </modules>
     </profile>
 

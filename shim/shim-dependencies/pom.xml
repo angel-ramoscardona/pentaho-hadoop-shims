@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.pentaho</groupId>
+    <artifactId>shim</artifactId>
+    <version>9.0.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>shim-dependencies</artifactId>
+  <version>9.0.0.0-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+  <properties>
+    <vendor-driver.version>2.6.0.0.hdp</vendor-driver.version>
+    <pentaho-code.version>11.0.0.0</pentaho-code.version>
+  </properties>
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>com.pentaho</groupId>
+        <artifactId>shim-bundle-plugin</artifactId>
+        <version>${shim-bundle-plugin.version}</version>
+        <configuration>
+          <resolverFilters>
+            <resolverFilter>
+              <include>
+                *:aws-java-sdk-core,*:jackson-core,*:xstream,*:guava,*:httpclient,
+                *:commons-vfs2
+              </include>
+              <exclude>
+                *:*log4j*,*:xml-apis,*:xercesImpl
+              </exclude>
+              <transitive>true</transitive>
+            </resolverFilter>
+            <!--
+            <resolverFilter>
+              <include>
+                *:pig
+              </include>
+              <transitive>false</transitive>
+            </resolverFilter>
+            -->
+          </resolverFilters>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>resolve</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-Version>${pentaho-osgi-bundles.version}</Bundle-Version>
+            <Fragment-Host>pentaho-hadoop-shims-hdp26-blueprint</Fragment-Host>
+            <Pentaho-Code-Version>${pentaho-code.version}</Pentaho-Code-Version>
+            <!--<DynamicImport-Package>*</DynamicImport-Package>-->
+            <Import-Package>
+            </Import-Package>
+            <_exportcontents>
+            </_exportcontents>
+            <Embed-Dependency>*</Embed-Dependency>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
