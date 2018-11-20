@@ -199,7 +199,7 @@
               org.pentaho.hadoop.shim.spi.*,
             </Import-Package>
             <_exportcontents>
-              org.apache.hadoop.hive;version=8.0.513.cdh
+              org.apache.hadoop.hive;version=9.0.511.emr
             </_exportcontents>
             <Embed-Dependency>*</Embed-Dependency>
           </instructions>
