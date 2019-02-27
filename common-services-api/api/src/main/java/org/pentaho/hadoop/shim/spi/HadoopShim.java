@@ -23,8 +23,6 @@ import java.util.List;
 
 import org.pentaho.di.core.row.ValueMetaInterface;
 import org.pentaho.hadoop.shim.ConfigurationException;
-import org.pentaho.hadoop.shim.HadoopConfiguration;
-import org.pentaho.hadoop.shim.HadoopConfigurationFileSystemManager;
 import org.pentaho.hadoop.shim.api.Configuration;
 import org.pentaho.hadoop.shim.api.DistributedCacheUtil;
 import org.pentaho.hadoop.shim.api.Required;
@@ -32,14 +30,10 @@ import org.pentaho.hadoop.shim.api.cluster.NamedCluster;
 import org.pentaho.hadoop.shim.api.fs.FileSystem;
 import org.pentaho.hadoop.shim.api.mapred.RunningJob;
 
-import java.io.IOException;
 import java.net.URI;
-import java.sql.Driver;
-import java.util.List;
 
 /**
- * Abstracts a Hadoop environment so that it may be swapped out at runtime. Users should obtain a shim implementation
- * through a {@link HadoopConfiguration} via {@link HadoopConfigurationProvider}.
+ * Abstracts a Hadoop environment so that it may be swapped out at runtime.
  *
  * @author Jordan Ganoff (jganoff@pentaho.com)
  */
@@ -61,16 +55,6 @@ public interface HadoopShim extends PentahoHadoopShim {
    */
   Driver getJdbcDriver( String driverType );
 
-  /**
-   * This is executed once the shim has been loaded. It provides a way for the shim implementation to register a VFS
-   * file provider.
-   *
-   * @param config Hadoop configuration this shim belongs to
-   * @param fsm    The current File System Manager
-   * @throws Exception when an error was encountered during shim loading. This will prevent the Hadoop configuration
-   *                   from being available.
-   */
-  void onLoad( HadoopConfiguration config, HadoopConfigurationFileSystemManager fsm ) throws Exception;
 
   /**
    * Get the namenode connection information, if applicable, for the Hadoop configuration.
@@ -114,11 +98,9 @@ public interface HadoopShim extends PentahoHadoopShim {
    */
   FileSystem getFileSystem( Configuration conf ) throws IOException;
 
-  default FileSystem getFileSystem( URI uri, Configuration conf, NamedCluster namedCluster ) throws IOException, InterruptedException{
+  default FileSystem getFileSystem( URI uri, Configuration conf, NamedCluster namedCluster ) throws IOException, InterruptedException {
     return getFileSystem( uri, conf, (String) null );
   }
-
-//  FileSystem getFileSystem( URI uri, Configuration conf, String user ) throws IOException, InterruptedException;
 
   /**
    * Look up a file system abstraction using the configuration provided

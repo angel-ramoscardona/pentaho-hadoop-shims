@@ -36,14 +36,12 @@ import org.pentaho.hadoop.shim.api.mapreduce.PentahoMapReduceJobBuilder;
 import org.pentaho.bigdata.api.mapreduce.TransformationVisitorService;
 import org.pentaho.di.core.exception.KettleFileException;
 import org.pentaho.di.core.logging.LogChannelInterface;
-import org.pentaho.di.core.plugins.LifecyclePluginType;
 import org.pentaho.di.core.plugins.PluginInterface;
 import org.pentaho.di.core.plugins.PluginRegistry;
 import org.pentaho.di.core.variables.VariableSpace;
 import org.pentaho.di.i18n.BaseMessages;
 import org.pentaho.di.job.entries.hadoopjobexecutor.JarUtility;
 import org.pentaho.hadoop.PluginPropertiesUtil;
-import org.pentaho.hadoop.shim.HadoopConfiguration;
 import org.pentaho.hadoop.shim.spi.HadoopShim;
 
 import java.io.FileNotFoundException;
@@ -56,7 +54,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -67,7 +67,6 @@ import static org.mockito.Mockito.when;
 @RunWith( MockitoJUnitRunner.class )
 public class MapReduceServiceImplTest {
   @Mock NamedCluster namedCluster;
-  @Mock HadoopConfiguration hadoopConfiguration;
   @Mock HadoopShim hadoopShim;
   @Mock ExecutorService executorService;
   @Mock JarUtility jarUtility;
@@ -79,12 +78,8 @@ public class MapReduceServiceImplTest {
 
   @Before
   public void setUp() throws MalformedURLException {
-    when( hadoopConfiguration.getHadoopShim() ).thenReturn( hadoopShim );
     resolvedJarUrl = new URL( "http://jar.net/jar" );
     List<TransformationVisitorService> visitorServices = new ArrayList<>();
-    mapReduceService =
-      new MapReduceServiceImpl( namedCluster, hadoopConfiguration.getHadoopShim(), executorService, jarUtility, pluginPropertiesUtil,
-        pluginRegistry, visitorServices );
   }
 
   @Test( expected = MapReduceExecutionException.class )
@@ -172,8 +167,6 @@ public class MapReduceServiceImplTest {
   public void testCreatePmrJobBuilder() throws IOException {
     PluginInterface pluginInterface = mock( PluginInterface.class );
     when( pluginInterface.getPluginDirectory() ).thenReturn( new URL( "file:///path" ) );
-    when( pluginRegistry.findPluginWithId( LifecyclePluginType.class, HadoopConfiguration.PLUGIN_ID_SPOON ) )
-      .thenReturn( pluginInterface );
     PentahoMapReduceJobBuilder jobBuilder =
       mapReduceService
         .createPentahoMapReduceJobBuilder( mock( LogChannelInterface.class ), mock( VariableSpace.class ) );

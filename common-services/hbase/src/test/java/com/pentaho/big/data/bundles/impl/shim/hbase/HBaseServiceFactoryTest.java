@@ -22,16 +22,13 @@
 
 package com.pentaho.big.data.bundles.impl.shim.hbase;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.pentaho.hadoop.shim.ConfigurationException;
-import org.pentaho.hadoop.shim.HadoopConfiguration;
 import org.pentaho.hadoop.shim.api.cluster.NamedCluster;
 import org.pentaho.hbase.shim.spi.HBaseBytesUtilShim;
 import org.pentaho.hbase.shim.spi.HBaseConnection;
 import org.pentaho.hbase.shim.spi.HBaseShim;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,14 +37,7 @@ import static org.mockito.Mockito.when;
  */
 public class HBaseServiceFactoryTest {
 
-  private HadoopConfiguration hadoopConfiguration;
   private HBaseServiceFactory hBaseServiceFactory;
-
-  @Before
-  public void setup() {
-    hadoopConfiguration = mock( HadoopConfiguration.class );
-    //hBaseServiceFactory = new HBaseServiceFactory( hadoopConfiguration );
-  }
 
   @Test
   public void testGetServiceClass() {
@@ -66,7 +56,6 @@ public class HBaseServiceFactoryTest {
     HBaseShim hBaseShim = mock( HBaseShim.class );
     HBaseConnection hBaseConnection = mock( HBaseConnection.class );
 
-    when( hadoopConfiguration.getHBaseShim() ).thenReturn( hBaseShim );
     when( hBaseShim.getHBaseConnection() ).thenReturn( hBaseConnection );
     when( hBaseConnection.getBytesUtil() ).thenReturn( mock( HBaseBytesUtilShim.class ) );
 
@@ -76,8 +65,6 @@ public class HBaseServiceFactoryTest {
   @Test
   public void testCreateFalure() throws ConfigurationException {
     HBaseShim hBaseShim = mock( HBaseShim.class );
-
-    when( hadoopConfiguration.getHBaseShim() ).thenReturn( hBaseShim );
 
     //assertNull( hBaseServiceFactory.create( mock( NamedCluster.class ) ) );
   }

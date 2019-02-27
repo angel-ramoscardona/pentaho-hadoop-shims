@@ -23,7 +23,6 @@
 package org.pentaho.big.data.impl.shim.mapreduce;
 
 import org.pentaho.bigdata.api.mapreduce.TransformationVisitorService;
-import org.pentaho.hadoop.shim.api.HasConfiguration;
 import org.pentaho.hadoop.shim.api.cluster.NamedCluster;
 import org.pentaho.hadoop.shim.api.cluster.NamedClusterServiceFactory;
 import org.pentaho.hadoop.shim.api.mapreduce.MapReduceService;
@@ -36,20 +35,12 @@ import java.util.concurrent.ExecutorService;
  * Created by bryan on 7/6/15.
  */
 public class MapReduceServiceFactoryImpl implements NamedClusterServiceFactory<MapReduceService> {
-  private final boolean isActiveConfiguration;
   private final HadoopShim hadoopShim;
   private final ExecutorService executorService;
   private final List<TransformationVisitorService> visitorServices;
 
   public MapReduceServiceFactoryImpl( HadoopShim hadoopShim, ExecutorService executorService,
                                       List<TransformationVisitorService> visitorServices ) {
-    this(true, hadoopShim, executorService, visitorServices);
-  }
-
-  public MapReduceServiceFactoryImpl( boolean isActiveConfiguration,
-                                      HadoopShim hadoopShim, ExecutorService executorService,
-                                      List<TransformationVisitorService> visitorServices ) {
-    this.isActiveConfiguration = isActiveConfiguration;
     this.hadoopShim = hadoopShim;
     this.executorService = executorService;
     this.visitorServices = visitorServices;
@@ -62,7 +53,6 @@ public class MapReduceServiceFactoryImpl implements NamedClusterServiceFactory<M
 
   @Override
   public boolean canHandle( NamedCluster namedCluster ) {
-//    boolean ncState = namedCluster == null ? true : !namedCluster.isUseGateway();
     return true;
   }
 

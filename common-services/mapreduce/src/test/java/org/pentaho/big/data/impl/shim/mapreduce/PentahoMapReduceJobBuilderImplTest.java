@@ -69,7 +69,6 @@ import org.pentaho.di.trans.step.StepInterface;
 import org.pentaho.di.trans.step.StepMeta;
 import org.pentaho.di.trans.step.StepMetaInterface;
 import org.pentaho.hadoop.shim.ConfigurationException;
-import org.pentaho.hadoop.shim.HadoopConfiguration;
 import org.pentaho.hadoop.shim.api.Configuration;
 import org.pentaho.hadoop.shim.api.DistributedCacheUtil;
 import org.pentaho.hadoop.shim.api.fs.FileSystem;
@@ -84,13 +83,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by bryan on 1/12/16.
@@ -100,7 +108,6 @@ import static org.mockito.Mockito.*;
 public class PentahoMapReduceJobBuilderImplTest {
 
   @Mock private NamedCluster namedCluster;
-  @Mock private HadoopConfiguration hadoopConfiguration;
   @Mock private LogChannelInterface logChannelInterface;
   @Mock private HadoopShim hadoopShim;
   @Mock private PluginInterface pluginInterface;
@@ -130,7 +137,6 @@ public class PentahoMapReduceJobBuilderImplTest {
     transXml = TransConfiguration.fromXML( transConfig.getXML() ).getXML();
 
     visitorServices.add( new MockVisitorService() );
-    when( hadoopConfiguration.getHadoopShim() ).thenReturn( hadoopShim );
 
     pentahoMapReduceJobBuilder =
       new PentahoMapReduceJobBuilderImpl( namedCluster, hadoopShim, logChannelInterface, variableSpace,
@@ -729,11 +735,6 @@ public class PentahoMapReduceJobBuilderImplTest {
         throw new RuntimeException( e );
       }
     } );
-
-    PentahoMapReduceJobBuilderImpl builder =
-      new PentahoMapReduceJobBuilderImpl( namedCluster, hadoopConfiguration.getHadoopShim(), logChannelInterface, variableSpace,
-        pluginInterface, vfsPluginDirectory, pmrProperties, transFactory, pmrArchiveGetter, badServices );
-    builder.configure( configuration );
   }
 
   @Test

@@ -35,8 +35,6 @@ import org.pentaho.di.core.variables.VariableSpace;
 import org.pentaho.di.i18n.BaseMessages;
 import org.pentaho.di.job.entries.hadoopjobexecutor.JarUtility;
 import org.pentaho.hadoop.PluginPropertiesUtil;
-import org.pentaho.hadoop.shim.HadoopConfiguration;
-import org.pentaho.hadoop.shim.api.HasConfiguration;
 import org.pentaho.hadoop.shim.api.cluster.NamedCluster;
 import org.pentaho.hadoop.shim.api.mapreduce.MapReduceExecutionException;
 import org.pentaho.hadoop.shim.api.mapreduce.MapReduceJarInfo;
@@ -103,7 +101,7 @@ public class MapReduceServiceImpl implements MapReduceService {
                                                                       VariableSpace variableSpace )
     throws IOException {
     PluginInterface pluginInterface =
-      pluginRegistry.findPluginWithId( LifecyclePluginType.class, HadoopConfiguration.PLUGIN_ID_SPOON );
+      pluginRegistry.findPluginWithId( LifecyclePluginType.class, "HadoopSpoonPlugin" );
     Properties pmrProperties;
     try {
       pmrProperties = pluginPropertiesUtil.loadPluginProperties( pluginInterface );
@@ -168,12 +166,10 @@ public class MapReduceServiceImpl implements MapReduceService {
       } else {
         return jarUtility.getClassByName( driverClass, resolvedJarUrl, shim.getClass().getClassLoader() );
       }
+    } catch ( MapReduceExecutionException mrEx ) {
+      throw mrEx;
     } catch ( Exception e ) {
-      if ( e instanceof MapReduceExecutionException ) {
-        throw (MapReduceExecutionException) e;
-      } else {
-        throw new MapReduceExecutionException( e );
-      }
+      throw new MapReduceExecutionException( e );
     }
   }
 }
