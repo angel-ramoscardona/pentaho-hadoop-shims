@@ -23,6 +23,12 @@
     </service-properties>
   </service>
 
+  <bean id="hadoopFileSystem" class="com.pentaho.big.data.bundles.impl.shim.hdfs.HadoopFileSystemFactoryImpl">
+    <argument ref="apacheHadoop"/>
+    <argument ref="apacheShimIdentifier"/>
+  </bean>
+
+  <service ref="hadoopFileSystem" interface="org.pentaho.hadoop.shim.api.hdfs.HadoopFileSystemFactory"/>
 
   <bean id="apacheFormatShim" class="org.pentaho.hadoop.shim.common.CommonFormatShim">
   </bean>

@@ -17,15 +17,15 @@
     <shim.name>apache</shim.name>
     <!-- default folder -->
     <org.apache.avro.version>1.8.0</org.apache.avro.version>
-    <hadoop-aws.version>3.1.0.3.0.0.0-1634</hadoop-aws.version>
+    <hadoop-aws.version>3.1.0</hadoop-aws.version>
     <!-- client and default folders -->
-    <hadoop.version>3.1.0.3.0.0.0-1634</hadoop.version>
+    <hadoop.version>3.1.0</hadoop.version>
     <gcs-connector.version>hadoop2-1.9.17</gcs-connector.version>
     <!-- pmr folder -->
     <commons-configuration.version>1.6</commons-configuration.version>
     <commons-configuration2.version>2.1.1</commons-configuration2.version>
     <mockito-all.version>1.10.19</mockito-all.version>
-    <org.apache.hadoop.version>3.1.0.3.0.0.0-1634</org.apache.hadoop.version>
+    <org.apache.hadoop.version>3.1.0</org.apache.hadoop.version>
     <org.apache.orc.version>1.6.1</org.apache.orc.version>
     <parquet.version>1.10.0.3.0.0.0-1634</parquet.version>
     <joda-time.version>2.9.9</joda-time.version>
